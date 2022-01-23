@@ -1,3 +1,4 @@
+//Max taken as arg instead
 const uint16_t maxiter = 500;
 
         /* Old Color Scheme */
@@ -9,6 +10,70 @@ const uint16_t maxiter = 500;
         //color[3] = k*2 & 255;
         //color[4] = k >> 8;
         //color[5] = k & 255;
+
+
+
+int * getColorTree(int k){
+
+  int * color = malloc(3*sizeof(int));
+
+  if (k >= maxiter) {
+    /* interior */
+    color[0] = 0;
+    color[1] = 0;
+    color[2] = 0;
+  }
+  else{
+    /* Exterior */
+    int colorNum = k % 7;
+
+    switch(colorNum){
+        case 0:
+            /* brown */
+            color[0] = 86;
+            color[1] = 70;
+            color[2] = 25;
+            break;
+        case 1:
+            /* brown */
+            color[0] = 106;
+            color[1] = 90;
+            color[2] = 35;
+            break;
+        case 2:
+            /* Dark Green */
+            color[0] = 47;
+            color[1] = 67;
+            color[2] = 14;
+            break;
+        case 3:
+            /* Light Yellow */
+            color[0] = 244;
+            color[1] = 243;
+            color[2] = 14;
+            break;
+        case 4:
+            /* Blue */
+            color[0] = 8;
+            color[1] = 13;
+            color[2] = 38;
+            break;
+        case 5:
+            /* Blue */
+            color[0] = 28;
+            color[1] = 48;
+            color[2] = 44;
+            break;
+        case 6:
+            /* Blue */
+            color[0] = 48;
+            color[1] = 58;
+            color[2] = 54;
+            break;
+    }
+  }
+  return color;
+}
 
 
 int * getColor(int k){
