@@ -5,14 +5,24 @@
 
 int main(int argc, char* argv[]){
 
+  /* TODO Take in area to render as argument 
+  printf("Arguments:");
+  char * endpt;
+  int t = strtol(argv[1]+2, &endpt,10) + 2;
+  int l = strtol(argv[2]+2, &endpt,10);
+  int d = strtol(argv[3], &endpt,10);
+  */
+
+
   /* The window in the plane. */
+  //TODO take out arguments from user
   const double xmin = -2;
   const double xmax = 2;
   const double ymin = -2;
   const double ymax = 2;
 
-  /* Maximum number of iterations, at most 65535. */
-  const uint16_t maxiter = 500;
+  /* Maximum number of iterations, at most 5000. */
+  const uint16_t maxiter = 5000;
 
   /* Image size, width is given, height is computed. */
   const int xres = 2000;

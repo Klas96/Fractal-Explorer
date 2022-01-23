@@ -32,3 +32,9 @@ gcc mandelbrot.c -o mandelbrot
 ## Run
 
 ./mandelbrot
+
+## TODO
+
+Size Area arguments
+Colors
+Out images
