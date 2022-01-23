@@ -12,6 +12,7 @@ int main(int argc, char *argv[]){
   double ymin = -2;
   double ymax = 2;
 
+  //TODO pack args extraction into function
   /* The window in the plane. */
   if(argc<=4) {
       printf("Not enugh Arguments Entered using default area. \n ");

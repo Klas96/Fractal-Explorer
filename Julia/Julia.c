@@ -9,10 +9,26 @@
 int main(int argc, char* argv[]){
 
   /* The window in the plane. */
-  const double xmin = -2;
-  const double xmax = 2;
-  const double ymin = -2;
-  const double ymax = 2;
+  double xmin = -2;
+  double xmax = 2;
+  double ymin = -2;
+  double ymax = 2;
+
+  /* The window in the plane. */
+  if(argc<=4) {
+      printf("Not enugh Arguments Entered using default area. \n ");
+
+      printf("x: %f to %f and y: %f to %f \n", xmin, xmax, ymin, ymax);
+  }
+  else {
+    xmin = atof(argv[1]);
+    xmax = atof(argv[2]);
+    ymin = atof(argv[3]);
+    ymax = atof(argv[4]);
+    printf("x: %f to %f and y: %f to %f \n", xmin, xmax, ymin, ymax);
+    // TODO Check if arguments is valid
+    // That is min < max
+  }
 
   /* Maximum number of iterations, at most 65535. */
   //Seams to change the color
@@ -23,7 +39,18 @@ int main(int argc, char* argv[]){
   const int yres = (xres*(ymax-ymin))/(xmax-xmin);
 
   double Cf;
+
   char name[16];
+  snprintf(name, 15*sizeof(char), "Julia.ppm");
+
+  FILE * fp = fopen(name,"wb");
+
+  /* The output file name */
+  fprintf(fp,"P3\n%d %d\n255\n",xres, yres);
+
+  /* Open the file and write the header. */
+  char *comment="# Julia Set";/* comment should start with # */
+
 
   /* Precompute pixel width and height. */
   double dx=(xmax-xmin)/xres;
@@ -36,20 +63,7 @@ int main(int argc, char* argv[]){
 
   int *color = malloc(3*sizeof(int));
 
-  Cf = -2+1+1+0.5+0.25;
-
-
-  /* The output file name */
-  snprintf(name, 15*sizeof(char), "Julia.ppm");
-
-  //const char* filename = "Julia.ppm";
-
-  /* Open the file and write the header. */
-    FILE * fp = fopen(name,"wb");
-    char *comment="# Julia Set";/* comment should start with # */
-
-  /*write ASCII header to the file*/
-  fprintf(fp,"P3\n%d %d\n255\n",xres, yres);
+  Cf = 0.75;
 
   /*
   fprintf(fp,
