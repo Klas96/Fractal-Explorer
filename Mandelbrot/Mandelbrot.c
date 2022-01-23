@@ -5,33 +5,43 @@
 
 #include "getColor.h"
 
-int main(int argc, char* argv[]){
+int main(int argc, char *argv[]){
 
-  /* TODO Take in area to render as argument 
-  printf("Arguments:");
-  char * endpt;
-  int t = strtol(argv[1]+2, &endpt,10) + 2;
-  int l = strtol(argv[2]+2, &endpt,10);
-  int d = strtol(argv[3], &endpt,10);
-  */
-
+  double xmin = -2;
+  double xmax = 2;
+  double ymin = -2;
+  double ymax = 2;
 
   /* The window in the plane. */
-  //TODO take out arguments from user
-  const double xmin = -2;
-  const double xmax = 2;
-  const double ymin = -2;
-  const double ymax = 2;
+  if(argc<=4) {
+      printf("Not enugh Arguments Entered using default area. \n ");
+
+      printf("x: %f to %f and y: %f to %f \n", xmin, xmax, ymin, ymax);
+  }
+  else {
+    xmin = atof(argv[1]);
+    xmax = atof(argv[2]);
+    ymin = atof(argv[3]);
+    ymax = atof(argv[4]);
+    printf("x: %f to %f and y: %f to %f \n", xmin, xmax, ymin, ymax);
+    //TODO Check if arguments is valid
+    //that is min < max
+  }
+
+
+  //TODO pick out from argv
+  /* The output file name */
+  const char* filename = "MandelbrotNew.ppm";
 
   /* Maximum number of iterations, at most 5000. */
   const uint16_t maxiter = 5000;
 
   /* Image size, width is given, height is computed. */
   const int xres = 2000;
+  //How to handel if negative
   const int yres = (xres*(ymax-ymin))/(xmax-xmin);
 
-  /* The output file name */
-  const char* filename = "Mandelbrot.ppm";
+  printf("YRes = %d", yres);
 
   /* Open the file and write the header. */
   FILE * fp = fopen(filename,"wb");
@@ -72,15 +82,6 @@ int main(int argc, char* argv[]){
         fwrite (black, 6, 1, fp);
       }
       else {
-        /* exterior */
-        //RGB
-        //unsigned char color[6];
-        //color[0] = k*3 >> 8;
-        //color[1] = k*3 & 255;
-        //color[2] = k*2 >> 8;
-        //color[3] = k*2 & 255;
-        //color[4] = k >> 8;
-        //color[5] = k & 255;
         int * color = getColor(k);
         fwrite(color, 6, 1, fp);
       };

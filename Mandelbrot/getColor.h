@@ -1,5 +1,16 @@
 const uint16_t maxiter = 500;
 
+        /* Old Color Scheme */
+        //RGB
+        //unsigned char color[6];
+        //color[0] = k*3 >> 8;
+        //color[1] = k*3 & 255;
+        //color[2] = k*2 >> 8;
+        //color[3] = k*2 & 255;
+        //color[4] = k >> 8;
+        //color[5] = k & 255;
+
+
 int * getColor(int k){
 
   int * color = malloc(3*sizeof(int));
