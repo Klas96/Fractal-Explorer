@@ -37,13 +37,11 @@ Julia Set render
 ## Intresting points to render:
 
 
-
-
 # Generalized Mandelbrot
 
 Generalized MandelBrot Set render
 
-![alt text for screen readers](Images/Generalized_Mandelbrot.ppm "Generalized Mandelbrot")
+![alt text for screen readers](Images/Generalized_Mandelbrot.png "Generalized Mandelbrot")
 
 
 

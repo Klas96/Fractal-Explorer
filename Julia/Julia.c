@@ -39,7 +39,7 @@ int main(int argc, char* argv[]){
 
 
   /* The output file name */
-  snprintf(name, 15*sizeof(char), "JuliaNew.ppm");
+  snprintf(name, 15*sizeof(char), "Julia.ppm");
 
   //const char* filename = "Julia.ppm";
 

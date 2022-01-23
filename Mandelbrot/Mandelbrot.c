@@ -34,7 +34,7 @@ int main(int argc, char *argv[]){
   const char* filename = "MandelbrotNew.ppm";
 
   /* Maximum number of iterations, at most 5000. */
-  const uint16_t maxiter = 5000;
+  const uint16_t maxiter = 500;
 
   /* Image size, width is given, height is computed. */
   const int xres = 2000;
@@ -43,15 +43,20 @@ int main(int argc, char *argv[]){
 
   printf("YRes = %d", yres);
 
+  int *color = malloc(3*sizeof(int));
+
   /* Open the file and write the header. */
   FILE * fp = fopen(filename,"wb");
   char *comment="# Mandelbrot set";/* comment should start with # */
 
   /*write ASCII header to the file*/
-  fprintf(fp,
-          "P6\n# Mandelbrot, xmin=%lf, xmax=%lf, ymin=%lf, ymax=%lf, maxiter=%d\n%d\n%d\n%d\n",
-          xmin, xmax, ymin, ymax, maxiter, xres, yres, (maxiter < 256 ? 256 : maxiter));
+  fprintf(fp,"P3\n%d %d\n255\n",xres, yres);
 
+  /*
+  fprintf(fp,
+          "P3\n# Mandelbrot, xmin=%lf, xmax=%lf, ymin=%lf, ymax=%lf, maxiter=%d\n%d\n%d\n%d\n",
+          xmin, xmax, ymin, ymax, maxiter, xres, yres, (maxiter < 256 ? 256 : maxiter));
+  */
   /* Precompute pixel width and height. */
   double dx=(xmax-xmin)/xres;
   double dy=(ymax-ymin)/yres;
@@ -64,7 +69,7 @@ int main(int argc, char *argv[]){
     y = ymax - j * dy;
     for(i = 0; i < xres; i++) {
       double u = 0.0;
-      double v= 0.0;
+      double v = 0.0;
       double u2 = u * u;
       double v2 = v*v;
       x = xmin + i * dx;
@@ -76,16 +81,11 @@ int main(int argc, char *argv[]){
             v2 = v * v;
       };
       /* compute  pixel color and write it to file */
-      if (k >= maxiter) {
-        /* interior */
-        const unsigned char black[] = {0, 0, 0, 0, 0, 0};
-        fwrite (black, 6, 1, fp);
-      }
-      else {
-        int * color = getColor(k);
-        fwrite(color, 6, 1, fp);
-      };
+      color = getColor(k);
+      fprintf(fp, "%d %d %d  ",color[0],color[1],color[2]);
+      //fwrite(color, 6, 1, fp);
     }
+    fprintf(fp,"\n");
   }
   fclose(fp);
   return 0;
