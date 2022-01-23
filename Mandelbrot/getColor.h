@@ -1,4 +1,6 @@
-int * GetColor(int k){
+const uint16_t maxiter = 500;
+
+int * getColor(int k){
 
   int * color = malloc(3*sizeof(int));
 

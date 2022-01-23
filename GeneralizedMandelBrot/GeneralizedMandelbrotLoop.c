@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <math.h>
 #include <stdint.h>
+#include "getColor.c"
 
 /* Global Variables */
 /* Maximum number of iterations */

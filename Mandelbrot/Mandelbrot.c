@@ -3,6 +3,8 @@
 #include <math.h>
 #include <stdint.h>
 
+#include "getColor.h"
+
 int main(int argc, char* argv[]){
 
   /* TODO Take in area to render as argument 
@@ -72,13 +74,14 @@ int main(int argc, char* argv[]){
       else {
         /* exterior */
         //RGB
-        unsigned char color[6];
-        color[0] = k*3 >> 8;
-        color[1] = k*3 & 255;
-        color[2] = k*2 >> 8;
-        color[3] = k*2 & 255;
-        color[4] = k >> 8;
-        color[5] = k & 255;
+        //unsigned char color[6];
+        //color[0] = k*3 >> 8;
+        //color[1] = k*3 & 255;
+        //color[2] = k*2 >> 8;
+        //color[3] = k*2 & 255;
+        //color[4] = k >> 8;
+        //color[5] = k & 255;
+        int * color = getColor(k);
         fwrite(color, 6, 1, fp);
       };
     }
