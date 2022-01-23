@@ -278,7 +278,7 @@ int main(int argc, char* argv[]){
 
       color = GetColor(k);
       fprintf(fp, "%d %d %d  ",color[0],color[1],color[2]);
-
+    
     }
     fprintf(fp,"\n");
   }
