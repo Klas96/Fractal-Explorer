@@ -24,8 +24,8 @@ int main(int argc, char *argv[]){
     ymin = atof(argv[3]);
     ymax = atof(argv[4]);
     printf("x: %f to %f and y: %f to %f \n", xmin, xmax, ymin, ymax);
-    //TODO Check if arguments is valid
-    //that is min < max
+    // TODO Check if arguments is valid
+    // That is min < max
   }
 
 

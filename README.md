@@ -26,7 +26,7 @@ Try rendering
 
 ./Mandelbrot -1.63 -1.62 -0.03 -0.02
 
-
+-0.761574,-0.0847596
 # Julia
 
 Julia Set render
