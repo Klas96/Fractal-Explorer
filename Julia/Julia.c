@@ -15,6 +15,7 @@ int main(int argc, char* argv[]){
   const double ymax = 2;
 
   /* Maximum number of iterations, at most 65535. */
+  //Seams to change the color
   const uint16_t maxiter = 500;
 
   /* Image size, width is given, height is computed. */
@@ -48,10 +49,13 @@ int main(int argc, char* argv[]){
     char *comment="# Julia Set";/* comment should start with # */
 
   /*write ASCII header to the file*/
+  fprintf(fp,"P3\n%d %d\n255\n",xres, yres);
+
+  /*
   fprintf(fp,
           "P3\n# Julia, xmin=%lf, xmax=%lf, ymin=%lf, ymax=%lf, maxiter=%d\n%d\n%d\n%d\n",
           xmin, xmax, ymin, ymax, maxiter, xres, yres, (maxiter < 256 ? 256 : maxiter));
-
+  */
 for (j = 0; j < yres; j++) {
   y = ymax - j * dy;
   for(i = 0; i < xres; i++) {
