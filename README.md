@@ -4,6 +4,8 @@
 
 Fractal Generators in C.
 
+Fractals included are MandelBrot, Julia, Generalized Mandelbrot.
+
 
 ## How to Use
 
@@ -55,6 +57,13 @@ gcc mandelbrot.c -o mandelbrot
 
 ## TODO
 
-Size Area arguments
+pack fractal function in function make loop use that function
+
+better make file
+
+Abstact up Color method to use in all fractals
 Colors
-Out images
+Argument as parameter x= osv
+Out images Argument
+
+Max Iter as argument to getColor

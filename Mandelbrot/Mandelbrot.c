@@ -3,7 +3,7 @@
 #include <math.h>
 #include <stdint.h>
 
-#include "getColor.h"
+#include "../getColor.h"
 
 int main(int argc, char *argv[]){
 
@@ -29,10 +29,8 @@ int main(int argc, char *argv[]){
     // That is min < max
   }
 
-
-  //TODO pick out from argv
   /* The output file name */
-  const char* filename = "MandelbrotNew.ppm";
+  const char* filename = "Mandelbrot.ppm";
 
   /* Maximum number of iterations, at most 5000. */
   const uint16_t maxiter = 500;

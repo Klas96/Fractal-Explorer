@@ -3,8 +3,7 @@
 #include <math.h>
 #include <stdint.h>
 
-#include "getColor.h"
-
+#include "../getColor.h"
 
 int main(int argc, char* argv[]){
 
@@ -91,6 +90,5 @@ int main(int argc, char* argv[]){
     }
     fclose(fp);
   }
-
   return 0;
 }
