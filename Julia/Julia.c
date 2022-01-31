@@ -21,10 +21,22 @@ int main(int argc, char* argv[]){
       printf("x: %f to %f and y: %f to %f \n", xmin, xmax, ymin, ymax);
   }
   else {
-    xmin = atof(argv[1]);
-    xmax = atof(argv[2]);
-    ymin = atof(argv[3]);
-    ymax = atof(argv[4]);
+    if (atof(argv[1]) < atof(argv[2])) {
+      xmin = atof(argv[1]);
+      xmax = atof(argv[2]);
+    }
+    else {
+      printf("xMin: %f have to be smaler than xMax= %f", atof(argv[1], atof(argv[2]);
+    }
+
+    if (atof(argv[3]) < atof(argv[4])) {
+      ymin = atof(argv[3]);
+      ymax = atof(argv[4]);
+    }
+    else {
+      printf("yMin: %f have to be smaler than yMax= %f", atof(argv[3], atof(argv[4]);
+    }
+    
     printf("x: %f to %f and y: %f to %f \n", xmin, xmax, ymin, ymax);
     // TODO Check if arguments is valid
     // That is min < max
