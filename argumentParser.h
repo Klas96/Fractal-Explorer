@@ -1,15 +1,18 @@
 double* parseArguments(int argc, char* argv[], double* ret) {
-
+  //TODO 5th argument for file output
   double xmin = -2;
   double xmax = 2;
   double ymin = -2;
   double ymax = 2;
 
   if(argc<=4) {
+
     printf("Not enugh Arguments Entered using default area. \n ");
     printf("x: %f to %f and y: %f to %f \n", xmin, xmax, ymin, ymax);
+
   }
   else {
+    
     if (atof(argv[1]) < atof(argv[2])) {
       xmin = atof(argv[1]);
       xmax = atof(argv[2]);
@@ -27,8 +30,6 @@ double* parseArguments(int argc, char* argv[], double* ret) {
     }
 
     printf("x: %f to %f and y: %f to %f \n", xmin, xmax, ymin, ymax);
-    // TODO Check if arguments is valid
-    // That is min < max
   }
 
   ret[0] = xmin;
@@ -37,4 +38,5 @@ double* parseArguments(int argc, char* argv[], double* ret) {
   ret[3] = ymax;
 
   return(ret);
+
 }

@@ -1,6 +1,8 @@
 //Max taken as arg instead
 const uint16_t maxiter = 500;
 
+//TODO make a easy structure to add new colors
+
 /* Old Color Scheme */
 //RGB
 //unsigned char color[6];

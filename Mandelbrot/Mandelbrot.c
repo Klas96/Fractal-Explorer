@@ -6,7 +6,6 @@
 #include "../getColor.h"
 #include "../argumentParser.h"
 
-
 int main(int argc, char *argv[]){
 
   double arguments[4];
