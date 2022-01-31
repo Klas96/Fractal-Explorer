@@ -14,7 +14,7 @@ Fractals included are MandelBrot, Julia, Generalized Mandelbrot.
 
 # Mandelbrot
 
-
+$$f_c(z) = z^2 + c$$
 
 MandelBrot Set render
 

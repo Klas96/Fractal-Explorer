@@ -6,10 +6,8 @@ double* parseArguments(int argc, char* argv[], double* ret) {
   double ymax = 2;
 
   if(argc<=4) {
-
     printf("Not enugh Arguments Entered using default area. \n ");
     printf("x: %f to %f and y: %f to %f \n", xmin, xmax, ymin, ymax);
-
   }
   else {
     
@@ -30,6 +28,11 @@ double* parseArguments(int argc, char* argv[], double* ret) {
     }
 
     printf("x: %f to %f and y: %f to %f \n", xmin, xmax, ymin, ymax);
+  }
+
+  if (argc > 4) {
+    char* fileName = argv[5];
+    printf("File Name: %s\n", fileName);
   }
 
   ret[0] = xmin;
