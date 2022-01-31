@@ -4,30 +4,18 @@
 #include <stdint.h>
 
 #include "../getColor.h"
+#include "../argumentParser.h"
+
 
 int main(int argc, char *argv[]){
 
-  double xmin = -2;
-  double xmax = 2;
-  double ymin = -2;
-  double ymax = 2;
+  double arguments[4];
+  parseArguments(argc, argv, arguments);
 
-  //TODO pack args extraction into function
-  /* The window in the plane. */
-  if(argc<=4) {
-      printf("Not enugh Arguments Entered using default area. \n ");
-
-      printf("x: %f to %f and y: %f to %f \n", xmin, xmax, ymin, ymax);
-  }
-  else {
-    xmin = atof(argv[1]);
-    xmax = atof(argv[2]);
-    ymin = atof(argv[3]);
-    ymax = atof(argv[4]);
-    printf("x: %f to %f and y: %f to %f \n", xmin, xmax, ymin, ymax);
-    // TODO Check if arguments is valid
-    // That is min < max
-  }
+  double xmin = arguments[0];
+  double xmax = arguments[1];
+  double ymin = arguments[2];
+  double ymax = arguments[3];
 
   /* The output file name */
   const char* filename = "Mandelbrot.ppm";
@@ -39,8 +27,6 @@ int main(int argc, char *argv[]){
   const int xres = 2000;
   //How to handel if negative
   const int yres = (xres*(ymax-ymin))/(xmax-xmin);
-
-  printf("YRes = %d", yres);
 
   int *color = malloc(3*sizeof(int));
 
