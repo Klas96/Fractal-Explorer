@@ -1,2 +1,2 @@
-GeneralizedMandelbrotmake: GeneralizedMandelbrot.c
-	gcc GeneralizedMandelbrot.c -lm -o GeneralizedMandelbrot -O2
+Multibrotmake: Multibrot.c
+	gcc Multibrot.c -lm -o Multibrot -O2

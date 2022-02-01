@@ -52,7 +52,7 @@ Julia Set render
 
 Generalized MandelBrot Set render
 
-![alt text for screen readers](Images/Generalized_Mandelbrot.png "Generalized Mandelbrot")
+![alt text for screen readers](Images/Multibrot.png "Generalized Mandelbrot")
 
 
 
