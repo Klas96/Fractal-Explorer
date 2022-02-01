@@ -14,7 +14,14 @@ Fractals included are MandelBrot, Julia, Generalized Mandelbrot.
 
 # Mandelbrot
 
+Test if a complex number $c$ is a member of the mandelbrot set.
+
 $$f_c(z) = z^2 + c$$
+
+$$z_{n+1} = z_n^2 + c$$
+
+c is a member of the mandelbrot set if, when starting with $z_0 = 0$ and applying the iteration repeatedly, the absolute value of $z_n$ remains bounded for all $n>0$.
+
 
 MandelBrot Set render
 
@@ -31,6 +38,8 @@ Try rendering
 -0.761574,-0.0847596
 # Julia
 
+
+
 Julia Set render
 
 ![alt text for screen readers](Images/Julia.png "Mandelbrot")
@@ -39,7 +48,7 @@ Julia Set render
 ## Intresting points to render:
 
 
-# Generalized Mandelbrot
+# Multibrot
 
 Generalized MandelBrot Set render
 
