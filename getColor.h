@@ -103,7 +103,6 @@ int * getColorIceFireTheme(int k){
   return color;
 }
 
-
 int * getColorTreeTheme(int k){
 
   int * color = malloc(3*sizeof(int));
@@ -114,7 +113,7 @@ int * getColorTreeTheme(int k){
     color[1] = 0;
     color[2] = 0;
   }
-  else{
+  else {
     /* Exterior */
     int colorNum = k % 7;
 
