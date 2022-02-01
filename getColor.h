@@ -104,9 +104,6 @@ int * getColorIceFireTheme(int k){
 }
 
 
-
-
-
 int * getColorTreeTheme(int k){
 
   int * color = malloc(3*sizeof(int));
@@ -292,7 +289,7 @@ int * getColor(int k) {
 
     switch (7) {
         case 1:
-            color = getColorTreeTheme(k);
+            color = getColorWikiTheme(k);
             break;
 
         case 2:
@@ -300,6 +297,10 @@ int * getColor(int k) {
             break;
 
         case 3:
+            color = getColorTreeTheme(k);
+            break;
+
+        case 4:
             color = getColorTreeTheme(k);
             break;
 

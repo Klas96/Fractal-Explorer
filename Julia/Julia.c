@@ -17,15 +17,14 @@ int main(int argc, char* argv[]){
   double ymin = arguments[2];
   double ymax = arguments[3];
 
+  double Cf  = 0.75;
+
   /* Maximum number of iterations, at most 65535. */
-  //Seams to change the color
   const uint16_t maxiter = 500;
 
   /* Image size, width is given, height is computed. */
   const int xres = 2000;
   const int yres = (xres*(ymax-ymin))/(xmax-xmin);
-
-  double Cf;
 
   char name[16];
   snprintf(name, 15*sizeof(char), "Julia.ppm");
@@ -50,16 +49,9 @@ int main(int argc, char* argv[]){
 
   int *color = malloc(3*sizeof(int));
 
-  Cf = 0.75;
-
-  /*
-  fprintf(fp,
-          "P3\n# Julia, xmin=%lf, xmax=%lf, ymin=%lf, ymax=%lf, maxiter=%d\n%d\n%d\n%d\n",
-          xmin, xmax, ymin, ymax, maxiter, xres, yres, (maxiter < 256 ? 256 : maxiter));
-  */
-for (j = 0; j < yres; j++) {
-  y = ymax - j * dy;
-  for(i = 0; i < xres; i++) {
+  for (j = 0; j < yres; j++) {
+    y = ymax - j * dy;
+    for(i = 0; i < xres; i++) {
       x = xmin + i * dx;
       //double u = 0.0;
       //double v= 0.0;
