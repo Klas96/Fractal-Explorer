@@ -1,20 +1,9 @@
 //Max taken as arg instead
 const uint16_t maxiter = 500;
 
-//TODO make a easy structure to add new colors
-
-/* Old Color Scheme */
-//RGB
-//unsigned char color[6];
-//color[0] = k*3 >> 8;
-//color[1] = k*3 & 255;
-//color[2] = k*2 >> 8;
-//color[3] = k*2 & 255;
-//color[4] = k >> 8;
-//color[5] = k & 255;
 
 // ICE and FIRE Pallet
-int * getColor(int k){
+int * getColorIceFireTheme(int k){
 
   int * color = malloc(3*sizeof(int));
 
@@ -118,7 +107,7 @@ int * getColor(int k){
 
 
 
-int * getColorTree(int k){
+int * getColorTreeTheme(int k){
 
   int * color = malloc(3*sizeof(int));
 
@@ -181,7 +170,7 @@ int * getColorTree(int k){
 }
 
 //Wikipedia Pallet
-int * getColorWIKI(int k){
+int * getColorWikiTheme(int k){
 
   int * color = malloc(3*sizeof(int));
 
@@ -295,4 +284,28 @@ int * getColorWIKI(int k){
     }
   }
   return color;
+}
+
+int * getColor(int k) {
+
+    int * color = malloc(3*sizeof(int));
+
+    switch (7) {
+        case 1:
+            color = getColorTreeTheme(k);
+            break;
+
+        case 2:
+            color = getColorIceFireTheme(k);
+            break;
+
+        case 3:
+            color = getColorTreeTheme(k);
+            break;
+
+        default:
+            color = getColorWikiTheme(k);
+    }
+
+    return color;
 }
