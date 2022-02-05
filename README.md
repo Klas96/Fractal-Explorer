@@ -38,7 +38,9 @@ Try rendering
 -0.761574,-0.0847596
 # Julia
 
+$$f_c(z) = z^2 + c$$
 
+$$z_{n+1} = z_n^2 + c$$
 
 Julia Set render
 
