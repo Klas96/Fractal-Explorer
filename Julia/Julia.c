@@ -16,15 +16,15 @@ int main(int argc, char* argv[]) {
   double xmax = arguments[1];
   double ymin = arguments[2];
   double ymax = arguments[3];
-
-  double cf_u  = 0;
-  double cf_v  = 0;
+ 
+  double cf_u  = -0.10440881763527066;
+  double cf_v  = 0.760460905942745;
 
   /* Maximum number of iterations, at most 65535. */
   const uint16_t maxiter = 500;
 
   /* Image size, width is given, height is computed. */
-  const int xres = 2000;
+  const int xres = 6000;
   const int yres = (xres*(ymax-ymin))/(xmax-xmin);
 
   char name[16];
