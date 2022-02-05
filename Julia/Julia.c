@@ -17,8 +17,8 @@ int main(int argc, char* argv[]) {
   double ymin = arguments[2];
   double ymax = arguments[3];
 
-  double cf_u  = 0.75;
-  double cf_v  = 0.75;
+  double cf_u  = 0;
+  double cf_v  = 0;
 
   /* Maximum number of iterations, at most 65535. */
   const uint16_t maxiter = 500;
@@ -65,8 +65,8 @@ int main(int argc, char* argv[]) {
 
       /* iterate the point */
       for (k = 1; k < maxiter && (u2 + v2 < 4.0); k++) {
-        u = u2 - v2 + cf_u; //Real part
         v = 2 * u * v + cf_v; //Imaginary Part
+        u = u2 - v2 + cf_u; //Real part
 
         //Squers
         u2 = u * u;
