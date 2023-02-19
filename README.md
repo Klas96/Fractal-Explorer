@@ -31,11 +31,13 @@ MandelBrot Set render
 
 Try rendering
 
+
 ./Mandelbrot 0.425 0.43 -0.2325 -0.23
 
 ./Mandelbrot -1.63 -1.62 -0.03 -0.02
 
 -0.761574,-0.0847596
+
 # Julia
 
 $$f_c(z) = z^2 + c$$
@@ -56,6 +58,9 @@ Generalized MandelBrot Set render
 
 ![alt text for screen readers](Images/Multibrot.png "Generalized Mandelbrot")
 
+# Chaos Game
+
+Generate N points chose a starting point at random between these N points. Choosw a vertex at random and moving halfway towards that vertex from the current point. Continue this process many times, eventually generating a pattern of points within the polygon.
 
 
 # Compile and Run
