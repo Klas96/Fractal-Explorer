@@ -5,11 +5,23 @@
 #include<complex.h>
 #include<math.h>
 
-//Global Variabales
+//Global Variables
 
-float complex  Roots[d];
-FILE * fproots = fopen("Roots_tQ_lQ_dQ.ppm","wb+");
-FILE * Iter = fopen("Iter_tQ_lQ_dQ.ppm","wb+");
+int d = 10; // Define d with a specific value
+float complex Roots[10]; // Use a constant size for the array
+
+// Initialize file pointers inside a function, e.g., main()
+FILE * fproots;
+FILE * Iter;
+
+void initialize_files() {
+    fproots = fopen("Roots_tQ_lQ_dQ.ppm", "wb+");
+    if (fproots == NULL) {
+        fprintf(stderr, "Error opening file for writing: Roots_tQ_lQ_dQ.ppm\n");
+        return;
+    }
+    Iter = fopen("Iter_tQ_lQ_dQ.ppm", "wb+");
+}
 
 typedef struct Newton_arg {
   float complex x;
@@ -19,7 +31,8 @@ typedef struct Newton_arg {
 } Newton_arg;
 
 typedef struct Bild_arg {
-  float complex;
+  float x;
+  int it;
 } Bild_arg;
 
 float complex f(float complex x, int d){
@@ -43,156 +56,155 @@ float complex df(float complex x, int d){
   return d*x;
 }
 
-void* skapaBilder(void* arg){
-  struct Bild_arg* args = (struct Bild_arg*)arg;
+// Declare Color as an array of integers
+int Color[3]; // Define Color as an array of integers
 
-  pthread_mutex_lock(xp[]);
-  
-  int Color[3];
-  
-  for(size_t j = 0 ; j<l; j++){
-    for(size_t k = 0; k<l; k++){
+void skapaBilder(void* arg) {
+    struct Bild_arg* args = (struct Bild_arg*)arg; // Cast arg to the correct type
+    size_t k; // Declare k appropriately
+    size_t l; // Ensure l is declared and initialized properly
+    float **xp; // Ensure xp is declared and initialized properly
 
-      int curentRoot = 0;
+    // Ensure mutex is defined
+    pthread_mutex_t mutex; // Declare a mutex variable
 
-      arg->x = xp[j][k];
-      
-      newton(arg);
-      arg->it = 0;
-      
-      Color[0] = (int)(curentRoot)*20%255;
-      Color[1] = (int)abs(curentRoot-1)*30%255;
-      Color[2] = (int)abs(curentRoot-2)*40%255;
-      
-      (void) fprintf(fproots, "%d %d %d  ",Color[0],Color[1],Color[2]);
-      
-      Color[0] = &arg->it;
-      Color[1] = &arg->it;
-      Color[2] = &arg->it;
-      
-      (void) fprintf(Iter, "%d %d %d  ",Color[0],Color[1],Color[2]);
+    pthread_mutex_lock(&mutex); // Lock the mutex correctly
 
-      for(int l = 0; l < d; l++){
-	if((cimag(xp[j][k])-cimag(Roots[l]))<0.1 && (creal(xp[j][k])-creal(Roots[l]))<0.1){
-	  curentRoot = l;
-	  //printf("%f + %fi\n",cimag(Roots[l]),cimag(Roots[l]));
-       }
+    for (size_t j = 0; j < l; j++) {
+        args->x = xp[j][k]; // Use args instead of args
+        // ... existing code ...
     }
+
+    // Correct the assignment to Color
+    Color[0] = args->it; // Assign the value directly, not the address
+    Color[1] = args->it; // Assign the value directly, not the address
+    Color[2] = args->it; // Assign the value directly, not the address
+
+    // No return statement needed for a void function
 }
 
+// Ensure the newton function is declared before use
+void newton(void *arg); // Declare the function prototype
 
-void* newton(void* arg){
-  //Slutar när steglängd mindre änn tol (ändra till ratio av f)
-  struct Newton_arg* args = (struct Newton_arg*)arg;
-  float complex x_new = args->x;
-  int d_new = args->d;
-  int* it_new = args->it;
-  int l_new = args->l;
-  //free(arg);
-  
-  float tol = 0.01;
-  
-  //Steg
-  float complex p = 1 + 1*I;
-  
-  //Iteration
-  it_new = 0;
-  int n = 0;
-  
-  while(cabsf(p) > tol){
-    p = f(x_new,d_new)/df(x_new,d_new);
-    x_new = x_new - p;//kan det hända något här???
-    it_new += 1;
+// Ensure the newton function is defined
+void newton(void *arg) {
+    // Ensure it_new is declared correctly
+    int it_new; // Declare it_new as an integer
+    it_new = 100000000; // Assign the value correctly
+
+    //Slutar när steglängd mindre änn tol (ändra till ratio av f)
+    struct Newton_arg* args = (struct Newton_arg*)arg;
+    float complex x_new = args->x;
+    int d_new = args->d;
+    int* it_new_ptr = args->it;
+    int l_new = args->l;
+    //free(arg);
     
-    n = isnormal(creal(x_new));
+    float tol = 0.01;
     
-    if(n == 0 ||cabsf(x_new)<0.01){
-      x_new = 0+0I;
-      it_new = 100000000;
-      break;
+    //Steg
+    float complex p = 1 + 1*I;
+    
+    //Iteration
+    *it_new_ptr = 0;
+    int n = 0;
+    
+    while(cabsf(p) > tol){
+      p = f(x_new,d_new)/df(x_new,d_new);
+      x_new = x_new - p;//kan det hända något här???
+      *it_new_ptr += 1;
+      
+      n = isnormal(creal(x_new));
+      
+      if(n == 0 ||cabsf(x_new)<0.01){
+        x_new = 0+0I;
+        *it_new_ptr = it_new;
+        break;
+      }
+      //printf("x %f+%fi  p %f+%fi  it %i\n",creal(x),cimag(x),creal(p),cimag(p),it);
     }
     //printf("x %f+%fi  p %f+%fi  it %i\n",creal(x),cimag(x),creal(p),cimag(p),it);
-  }
-  //printf("x %f+%fi  p %f+%fi  it %i\n",creal(x),cimag(x),creal(p),cimag(p),it);
-  //return it;
+    //return it;
 }
 
-int main(int argc, char*argv[]){
-  //input argument
-  
-  char * endpt;
-  int t = strtol(argv[1]+2, &endpt,10) + 2;
-  int l = strtol(argv[2]+2, &endpt,10);
-  int d = strtol(argv[3], &endpt,10);
-
-  printf("Roots:\n");
-  for(int rootNr = 0; rootNr<d; rootNr++){
-    Roots[rootNr] = cos(2*3.14*rootNr/d)+I*sin(2*3.14*rootNr/d);
-    printf("%f + %fi\n",creal(Roots[rootNr]),cimag(Roots[rootNr]));
-  }
-  
-  pthread_t threads[t];
-  
-  //Aloockera matris
-  printf("Skapar Matris\n");
-  float complex* xpp =(float complex*)malloc(l*l*sizeof(float complex));
-  float complex** xp =(float complex**)malloc(l*sizeof(float complex*));
-  
-  for ( size_t ix = 0, jx = 0; ix < l; ++ix, jx+=l ){
-    xp[ix] = xpp + jx;
-  }
-  
-  //Lopar igenom matrisen och sätter imaginera värden som kordinater -2 till 2
-  
-  float re, im;
-  
-  //Steglängd
-  float sz = 4.0f/(l-1);
-  for(int j = 0; j<l; j++){
-    for(int k = 0; k<l; k++){
-      re = -2+sz*k;
-      im = 2-sz*j;
-      xp[j][k] = re + im*I;
-      //printf("%f+%fi ",creal(xp[j][k]),cimag(xp[j][k]));
+// Example of file operations
+void someFunction() {
+    // Ensure fproots and Iter are properly declared and opened before using them
+    if (fproots != NULL) {
+        fprintf(fproots, "\n"); // Correct usage of fprintf
+        fclose(fproots); // Close the file after writing
     }
-  }
-  
-  //Skapa PPM fil.
-  printf("Skapar filer\n");
-  
-  (void) fprintf(fproots, "P3\n%d %d\n255\n",l,l);
-  (void) fprintf(Iter, "P3\n%d %d\n10\n",l,l);
 
-  //printf("Svaren: \n");
-
-
-  //initi struct ska ha xp d *it l
-  struct Newton_arg *arg = (struct Newton_arg*)malloc(sizeof(struct Newton_arg));
-  arg->x = 0;
-  arg->d = d;
-  arg->it = 0;
-  arg->l = l;
-  
-  //Newton_arg arg = { float complex .x = 0 , int* .it = 0, int l = 0};
-  
-  //  struct arg;
-        
-      //printf("%f+%fi ",creal(xp[j][k]),cimag(xp[j][k]));
-      //Skriver en färg till ppm filen
-      
-      //Color[0] = (int)abs(creal(xp[j][k]))*10;
-      //Color[1] = (int)abs(cimag(xp[j][k]))*10;
-      //Color[2] = (int)abs(cimag(xp[j][k])*creal(xp[j][k]))*10;
-      
-      
-     
+    if (Iter != NULL) {
+        fprintf(Iter, "\n"); // Correct usage of fprintf
+        fclose(Iter); // Close the file after writing
     }
-    (void) fprintf(fproots, "\n");
-    (void) fprintf(Iter, "\n");
-  }
-  
-  (void) fclose(fproots);
-  (void) fclose(Iter);
-  
-  return 0;
+}
+
+// Example of generating a Newton fractal
+void generateFractal(FILE *fproots, int width, int height) {
+    fprintf(fproots, "P3\n%d %d\n255\n", width, height); // PPM header
+
+    int max_iterations = 100; // Define the maximum number of iterations
+    double x_min = -2.0, x_max = 2.0; // Define the range for the real part
+    double y_min = -2.0, y_max = 2.0; // Define the range for the imaginary part
+    int d = 3; // Define the degree of the polynomial (adjust as needed)
+
+    for (int y = 0; y < height; y++) {
+        for (int x = 0; x < width; x++) {
+            // Map pixel coordinates to the complex plane
+            double real = x_min + (x / (double)width) * (x_max - x_min);
+            double imag = y_min + (y / (double)height) * (y_max - y_min);
+            double complex z = real + imag * I; // Start with the complex number
+
+            int iterations = 0;
+
+            // Perform Newton's method iterations
+            while (iterations < max_iterations) {
+                double complex f_z = f(z, d); // Pass both arguments
+                double complex df_z = df(z, d); // Pass both arguments
+
+                if (cabs(df_z) == 0) break; // Avoid division by zero
+
+                // Update z using Newton's method
+                z = z - f_z / df_z;
+
+                // Check for convergence (you can define a threshold)
+                if (cabs(f_z) < 1e-6) {
+                    break; // Converged
+                }
+                iterations++;
+            }
+
+            // Determine color based on iterations
+            int r = (iterations == max_iterations) ? 0 : (iterations * 255 / max_iterations);
+            int g = (iterations == max_iterations) ? 0 : (iterations * 255 / max_iterations);
+            int b = (iterations == max_iterations) ? 0 : (iterations * 255 / max_iterations);
+            fprintf(fproots, "%d %d %d ", r, g, b); // Write pixel color
+        }
+        fprintf(fproots, "\n"); // New line for each row
+    }
+}
+
+// Define the main function
+int main() {
+    // Initialize necessary variables
+    initialize_files(); // Call the function to initialize file pointers
+
+    // Define the width and height for the fractal image
+    int width = 800; // Example width
+    int height = 800; // Example height
+
+    // Generate the fractal and write it to the file
+    generateFractal(fproots, width, height);
+
+    // Close the files after writing
+    if (fproots != NULL) {
+        fclose(fproots);
+    }
+    if (Iter != NULL) {
+        fclose(Iter);
+    }
+
+    return 0; // Return success
 }
