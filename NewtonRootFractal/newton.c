@@ -7,12 +7,19 @@
 
 //Global Variables
 
-int d = 10; // Define d with a specific value
-float complex Roots[10]; // Use a constant size for the array
+int d = 5; // Define d with a specific value
+//TODO fix this
+float complex* Roots; // Change to a pointer for dynamic allocation
 
 // Initialize file pointers inside a function, e.g., main()
 FILE * fproots;
-FILE * Iter;
+FILE * fpIter;
+
+void calculate_roots() {
+    for (int k = 0; k < d; k++) {
+        Roots[k] = cexp(2 * M_PI * I * k / d); // Calculate the k-th root of unity
+    }
+}
 
 void initialize_files() {
     fproots = fopen("Roots_tQ_lQ_dQ.ppm", "wb+");
@@ -20,7 +27,7 @@ void initialize_files() {
         fprintf(stderr, "Error opening file for writing: Roots_tQ_lQ_dQ.ppm\n");
         return;
     }
-    Iter = fopen("Iter_tQ_lQ_dQ.ppm", "wb+");
+    fpIter = fopen("Iter_tQ_lQ_dQ.ppm", "wb+");
 }
 
 typedef struct Newton_arg {
@@ -54,33 +61,6 @@ float complex df(float complex x, int d){
   }
   //printf("df(x) %f+%fi  ",creal(x*d),cimag(x*d));
   return d*x;
-}
-
-// Declare Color as an array of integers
-int Color[3]; // Define Color as an array of integers
-
-void skapaBilder(void* arg) {
-    struct Bild_arg* args = (struct Bild_arg*)arg; // Cast arg to the correct type
-    size_t k; // Declare k appropriately
-    size_t l; // Ensure l is declared and initialized properly
-    float **xp; // Ensure xp is declared and initialized properly
-
-    // Ensure mutex is defined
-    pthread_mutex_t mutex; // Declare a mutex variable
-
-    pthread_mutex_lock(&mutex); // Lock the mutex correctly
-
-    for (size_t j = 0; j < l; j++) {
-        args->x = xp[j][k]; // Use args instead of args
-        // ... existing code ...
-    }
-
-    // Correct the assignment to Color
-    Color[0] = args->it; // Assign the value directly, not the address
-    Color[1] = args->it; // Assign the value directly, not the address
-    Color[2] = args->it; // Assign the value directly, not the address
-
-    // No return statement needed for a void function
 }
 
 // Ensure the newton function is declared before use
@@ -135,20 +115,20 @@ void someFunction() {
         fclose(fproots); // Close the file after writing
     }
 
-    if (Iter != NULL) {
-        fprintf(Iter, "\n"); // Correct usage of fprintf
-        fclose(Iter); // Close the file after writing
+    if (fpIter != NULL) {
+        fprintf(fpIter, "\n"); // Correct usage of fprintf
+        fclose(fpIter); // Close the file after writing
     }
 }
 
 // Example of generating a Newton fractal
-void generateFractal(FILE *fproots, int width, int height) {
+void generateFractalIter(FILE *fproots, int width, int height) {
     fprintf(fproots, "P3\n%d %d\n255\n", width, height); // PPM header
 
     int max_iterations = 100; // Define the maximum number of iterations
     double x_min = -2.0, x_max = 2.0; // Define the range for the real part
     double y_min = -2.0, y_max = 2.0; // Define the range for the imaginary part
-    int d = 3; // Define the degree of the polynomial (adjust as needed)
+    int d = 5; // Define the degree of the polynomial
 
     for (int y = 0; y < height; y++) {
         for (int x = 0; x < width; x++) {
@@ -169,7 +149,7 @@ void generateFractal(FILE *fproots, int width, int height) {
                 // Update z using Newton's method
                 z = z - f_z / df_z;
 
-                // Check for convergence (you can define a threshold)
+                // Check for convergence
                 if (cabs(f_z) < 1e-6) {
                     break; // Converged
                 }
@@ -186,25 +166,103 @@ void generateFractal(FILE *fproots, int width, int height) {
     }
 }
 
+int find_root_index(double complex z, float complex *Roots, int d) {
+    // Example implementation: find the closest root
+    int closest_index = 0;
+    double min_distance = cabs(z - Roots[0]);
+
+    for (int i = 1; i < d; i++) {
+        double distance = cabs(z - Roots[i]);
+        if (distance < min_distance) {
+            min_distance = distance;
+            closest_index = i;
+        }
+    }
+    return closest_index;
+}
+
+void generateFractalRoots(FILE *fproots, int width, int height) {
+    fprintf(fproots, "P3\n%d %d\n255\n", width, height); // PPM header
+
+    int max_iterations = 100; // Define the maximum number of iterations
+    double x_min = -2.0, x_max = 2.0; // Define the range for the real part
+    double y_min = -2.0, y_max = 2.0; // Define the range for the imaginary part
+    int d = 5; // Define the degree of the polynomial
+
+    for (int y = 0; y < height; y++) {
+        for (int x = 0; x < width; x++) {
+            // Map pixel coordinates to the complex plane
+            double real = x_min + (x / (double)width) * (x_max - x_min);
+            double imag = y_min + (y / (double)height) * (y_max - y_min);
+            double complex z = real + imag * I; // Start with the complex number
+
+            int iterations = 0;
+
+            // Perform Newton's method iterations
+            while (iterations < max_iterations) {
+                double complex f_z = f(z, d); // Pass both arguments
+                double complex df_z = df(z, d); // Pass both arguments
+
+                if (cabs(df_z) == 0) break; // Avoid division by zero
+
+                // Update z using Newton's method
+                z = z - f_z / df_z;
+
+                // Check for convergence
+                if (cabs(f_z) < 1e-6) {
+                    break; // Converged
+                }
+                iterations++;
+            }
+
+            // Determine color based on iterations and root convergence
+            int r, g, b;
+            if (iterations == max_iterations) {
+                r = 0; g = 0; b = 0; // No convergence
+            } else {
+                // Color determined by the root_index
+                int root_index = find_root_index(z, Roots, d);
+                r = (root_index % 3 == 0) ? 255 : 0; // Red
+                g = (root_index % 3 == 1) ? 255 : 0; // Green
+                b = (root_index % 3 == 2) ? 255 : 0; // Blue
+            }
+            fprintf(fproots, "%d %d %d ", r, g, b); // Write pixel color
+        }
+        fprintf(fproots, "\n"); // New line for each row
+    }
+}
+
+void initialize_roots() {
+    Roots = malloc(d * sizeof(float complex)); // Allocate memory for Roots
+    if (Roots == NULL) {
+        fprintf(stderr, "Memory allocation failed for Roots\n");
+        exit(EXIT_FAILURE); // Exit if allocation fails
+    }
+}
+
 // Define the main function
 int main() {
     // Initialize necessary variables
     initialize_files(); // Call the function to initialize file pointers
+    initialize_roots(); // Call the function to initialize Roots
+    calculate_roots();
 
     // Define the width and height for the fractal image
     int width = 800; // Example width
     int height = 800; // Example height
 
     // Generate the fractal and write it to the file
-    generateFractal(fproots, width, height);
+    generateFractalIter(fpIter, width, height);
+    generateFractalRoots(fproots,width,height);
 
     // Close the files after writing
     if (fproots != NULL) {
         fclose(fproots);
     }
-    if (Iter != NULL) {
-        fclose(Iter);
+    if (fpIter != NULL) {
+        fclose(fpIter);
     }
 
+    free(Roots); // Free the allocated memory before exiting
     return 0; // Return success
 }
